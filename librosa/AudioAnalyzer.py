@@ -15,23 +15,41 @@ import matplotlib.pyplot as plt
 import matplotlib.patheffects as path_effects
 
 import seaborn as sns
-sns.set(font_scale=2)
 
+"""
+AUDIO ANALYZER CLASS
+==========================================================================================================
+"""
 
 class AudioAnalyzer:
     
     def __init__(self, filename, fft_size=256, input_sr=41000):
+        """
+        Loads in and transform sample data from an audio file into a pandas dataframe for analysis and graphing
+        
+        Input: 
+            filename: relative path to audio file
+            fft_size: The number of frequency bins for the fft analysis. Defaults to 256
+            input_sr: the sample rate of the input audio file. Defaults to 41000
+        """
         y, sr = librosa.load(filename, sr=input_sr)
         self.y = y
         self.sr = sr
         self.fft_size = fft_size
         
     def change_fft_bin_size(self, size):
+        """
+           Optionally changes the number of fft bins after initialization.
+        """
         self.fft_size = size
         self.spectrum_analysis()
         
     def spectrum_analysis(self):
-        
+        """
+        Runs spectrum analysis on the input audio file. Sets and returns a dataframe with frequency information across all fft bins. 
+        Amplitudes are averaged at each frequency.
+        Note: This method must be called before any analysis or plotting can be done on the class instance. 
+        """
         self.df = pd.DataFrame(np.abs(librosa.stft(self.y, n_fft=self.fft_size)))
         
         bins = librosa.fft_frequencies(sr=self.sr, n_fft=self.fft_size)
@@ -44,6 +62,10 @@ class AudioAnalyzer:
     
     def plot_spectrum(self, min_freq=0, max_freq=None, fill=False):
         
+        """
+        Plots a single spectrogram of averaged frequencies across all fft bins. Uses the generated dataframe as the source. 
+        """
+        
         max_freq = max_freq or 20000.
         window = self.df.loc[(self.df.bins * 1000. >= min_freq) & (self.df.bins * 1000. <= max_freq)]
 
@@ -52,12 +74,22 @@ class AudioAnalyzer:
             plt.fill_between(self.df.bins, self.df.average_amplitude)
         
 
-        
+"""
+SIGNAL COMPARE CLASS
+==========================================================================================================
+"""        
         
         
 class SignalCompare():
     
     def __init__(self, original, modified):
+        """
+        Compares the frequency and amplitude information of two AudioAnalyzer class instances. 
+        NOTE: Each Audio analyzer class must have called its .spectrum_analysis method before being passed in to this ckass.
+        
+        Input:
+            original, modified: the two AudioAnalyzer class instances.
+        """
         self.original_df = original.df
         self.modified_df = modified.df
         
@@ -77,7 +109,15 @@ class SignalCompare():
                             ratio=False,
                             legend=["Original", "Modified", "Ratio (Mod:Orig)", "Threshold"],
                             threshold=False,
-                           ):        
+                           ):  
+        """
+        Plots a spectrogram comparing the frequencies and relative amplitudes at each fft bin of the two AudioAnalyzer class instances. 
+        Plots up to four lines:
+            first AudioAnalyzer class instance - frequency and amplitude
+            Second AudioAnalyzer class instance - frequency and amplitude
+            Difference in amplitude at each bin
+            Threshold - Shows where the first or second AudioAnlyzer amplitude is greater (relative hot or old spots)
+        """
         
         dfs = self.dfs.copy()
         fig = plt.figure(figsize=(20,8))
@@ -113,6 +153,11 @@ class SignalCompare():
                                background_color="white",
                                background_alpha=0.5
                               ):
+        """
+        Plots a heatmap and spectrogram showing the relative hot and cool spots of thw two compared AudioAnalyzer class instances. 
+        A number of options are available to customize the appearance of the generated plot. 
+        """
+        
 #       DATAFRAME SETUP
         df = self.modified_df
 
