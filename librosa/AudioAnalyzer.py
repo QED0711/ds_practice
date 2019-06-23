@@ -135,7 +135,7 @@ class SignalCompare():
         if ratio:
             if frange:                
                 ratio_df = self.ratio_df[(self.ratio_df.bins * 1000. >= frange[0]) & (self.ratio_df.bins * 1000. <= frange[1])]
-                plt.plot(ratio_df['bins'], ratio_df['scaled_amplitude'], label=legend[2], c="forestgreen")
+                plt.plot(ratio_df['bins'], ratio_df['scaled_amplitude'], label=legend[2], c="forestgreen", linestyle="-.")
             else:
                 plt.plot(self.ratio_df['bins'], self.ratio_df['scaled_amplitude'], label=legend[2], c="forestgreen")
         
@@ -191,7 +191,7 @@ class SignalCompare():
 #       FREQUENCY PLOT        
         sns.lineplot(data=plot_df, x="bins", y="scaled_amplitude", color='black', zorder=10, ax=ax2, path_effects=[path_effects.SimpleLineShadow(), path_effects.Normal()])
         ax2.fill_between(x=plot_df.bins, y1=plot_df.scaled_amplitude, color='white', alpha=0.0)
-        ax2.fill_between(x=plot_df.bins, y1=plot_df.scaled_amplitude, y2=plt.ylim()[1], color=background_color, alpha=background_alpha)
+        ax2.fill_between(x=plot_df.bins, y1=plot_df.scaled_amplitude, y2=1.0, color=background_color, alpha=background_alpha)
 
         ax2.set_xlabel("Frequency (kHz)", size=36)
         ax2.set_ylabel("Scaled Amplitude", size=36)     
