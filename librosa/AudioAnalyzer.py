@@ -107,7 +107,7 @@ class SignalCompare():
                             ylabel="Normalized Amplitude",                             
                             frange=None,
                             ratio=False,
-                            legend=["Original", "Modified", "Ratio (Mod:Orig)", "Threshold"],
+                            legend=["Spectrum 1", "Spectrum 2", "Signal Diff.", "Threshold"],
                             threshold=False,
                            ):  
         """
