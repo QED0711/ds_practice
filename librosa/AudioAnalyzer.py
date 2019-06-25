@@ -60,7 +60,7 @@ class AudioAnalyzer:
         self.df = self.df[['bins', 'average_amplitude']]
         return self.df
     
-    def plot_spectrum(self, min_freq=0, max_freq=None, fill=False):
+    def plot_spectrum(self, min_freq=0, max_freq=None, fill=False, title="Spectrogram - Average Frequency"):
         
         """
         Plots a single spectrogram of averaged frequencies across all fft bins. Uses the generated dataframe as the source. 
@@ -73,7 +73,12 @@ class AudioAnalyzer:
         if fill:            
             plt.fill_between(self.df.bins, self.df.average_amplitude)
         
-
+        legend = plt.legend()
+        legend.remove()
+        plt.xlabel("Frequency (kHz)")
+        plt.ylabel("Amplitude (normalized)")
+        plt.title(title)
+        plt.ylim([0., 1.])
 """
 SIGNAL COMPARE CLASS
 ==========================================================================================================
@@ -147,6 +152,7 @@ class SignalCompare():
         plt.legend()
         
     def plot_attenuation_graph(self, 
+                               plot_original=False,
                                frange=[], 
                                title="Frequency Attenuation", 
                                cmap="plasma",
@@ -159,7 +165,10 @@ class SignalCompare():
         """
         
 #       DATAFRAME SETUP
-        df = self.modified_df
+        if plot_original:
+            df = self.original_df
+        else:
+            df = self.modified_df            
 
         df['ratio_amplitude'] = self.ratio_df.scaled_amplitude
 
