@@ -79,6 +79,9 @@ class AudioAnalyzer:
         plt.ylabel("Amplitude (normalized)")
         plt.title(title)
         plt.ylim([0., 1.])
+
+
+
 """
 SIGNAL COMPARE CLASS
 ==========================================================================================================
@@ -183,12 +186,15 @@ class SignalCompare():
             ratio_df = self.ratio_df
 
 #       FIGURE SETUP
-        fig = plt.figure(figsize=(32,8))
-        ax1 = fig.add_subplot(111, facecolor="white")
-        ax2 = fig.add_subplot(111, facecolor="#00000000")
-        fig2 = plt.figure(figsize=(32, 8))
-        cbaxes = fig2.add_subplot(32,1,1) 
-        cbaxes.set_title("Scaled Amplitude Ratio")
+        fig = plt.figure(figsize=(20,10))
+        ax1 = fig.add_subplot(211, facecolor="white")
+        # ax1 = plt.subplot2grid((8,1), (0,0), rowspan=5, facecolor="white", fig=fig)
+        ax2 = fig.add_subplot(211, facecolor="#00000000")
+        # ax2 = plt.subplot2grid((8,1), (0,0), rowspan=2, facecolor="#00000000", fig=fig)
+        # fig2 = plt.figure(figsize=(32, 8))
+        # cbaxes = fig2.add_subplot(32,1,1) 
+        cbaxes = plt.subplot2grid((16,1), (10,0)) 
+        cbaxes.set_title("Scaled Amplitude Ratio", size=14)
         
 #       HEATMAP PLOT
         sns.heatmap(data=ratio_df.set_index('bins').transpose(), cbar=True, cbar_ax=cbaxes, cbar_kws={"orientation" : "horizontal"}, cmap=cmap, alpha=0.95, zorder=1, ax=ax1)
@@ -202,11 +208,11 @@ class SignalCompare():
         ax2.fill_between(x=plot_df.bins, y1=plot_df.scaled_amplitude, color='white', alpha=0.0)
         ax2.fill_between(x=plot_df.bins, y1=plot_df.scaled_amplitude, y2=1.0, color=background_color, alpha=background_alpha)
 
-        ax2.set_xlabel("Frequency (kHz)", size=36)
-        ax2.set_ylabel("Scaled Amplitude", size=36)     
+        ax2.set_xlabel("Frequency (kHz)", size=28)
+        ax2.set_ylabel("Scaled Amplitude", size=28)     
         
         ax2.margins(0)
-        fig.suptitle(title, size=48, y=1)
+        fig.suptitle(title, size=36, y=0.95)
         
     
     @staticmethod
