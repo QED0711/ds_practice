@@ -199,7 +199,7 @@ class SignalCompare():
         cbaxes.set_title("Scaled Amplitude Ratio", size=14)
         
 #       HEATMAP PLOT
-        sns.heatmap(data=ratio_df.set_index('bins').transpose(), cbar=True, cbar_ax=cbaxes, cbar_kws={"orientation" : "horizontal"}, cmap=cmap, alpha=0.95, zorder=1, ax=ax1)
+        sns.heatmap(data=ratio_df.set_index('bins').transpose(), cbar=True, cbar_ax=cbaxes, cbar_kws={"orientation" : "horizontal"}, cmap=cmap, alpha=0.95, zorder=1, ax=ax1, vmin=0.0, vmax=1.0)
         ax1.set_xlabel("")
         ax1.set_xticks([])
         ax1.set_ylabel("")
