@@ -23,7 +23,7 @@ AUDIO ANALYZER CLASS
 
 class AudioAnalyzer:
     
-    def __init__(self, filename, fft_size=256, input_sr=41000):
+    def __init__(self, filename, fft_size=256, input_sr=41000, analyze=True):
         """
         Loads in and transform sample data from an audio file into a pandas dataframe for analysis and graphing
         
@@ -36,6 +36,8 @@ class AudioAnalyzer:
         self.y = y
         self.sr = sr
         self.fft_size = fft_size
+        if analyze:
+            self.spectrum_analysis()
         
     def change_fft_bin_size(self, size):
         """
