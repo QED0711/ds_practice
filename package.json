@@ -1,0 +1,22 @@
+{
+  "name": "practice",
+  "version": "1.0.0",
+  "description": "A practice repository for my data science projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/QED0711/ds_practice.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/QED0711/ds_practice/issues"
+  },
+  "homepage": "https://github.com/QED0711/ds_practice#readme",
+  "dependencies": {
+    "dom-parser": "^0.1.6"
+  }
+}
