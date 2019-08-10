@@ -1,11 +1,14 @@
 import pandas as pd
 import pymongo
 from copy import copy, deepcopy
+import pdb
 
 from keys import *
 
 from get_related_links import get_related_links
 import time
+
+import signal
 
 class WikiScrapper:
     
@@ -15,6 +18,8 @@ class WikiScrapper:
     
     def traverse_from(self, url, max_depth=3, max_nodes=100):
         current = get_related_links(url)
+        # pdb.set_trace()
+        
         if current:
             queue = list(current['links'])
         else: 
@@ -24,15 +29,21 @@ class WikiScrapper:
         seen = {current["title"]: True}
         depth_count = 1
                 
-        while depth_count < max_depth:
+        while depth_count < max_depth or len(queue) == 0:
             queue_copy = queue.copy()
             
             for link in queue_copy:
                 try:
-                    current = get_related_links(queue.pop(0))
-                    
+                    current_url = queue.pop(0)
+                    if not self.valid_url(current_url):
+                        print("BAD URL:", current_url)
+                        print("queue len", len(queue))
+                        continue
+                    print(current_url)
+                    current = get_related_links(current_url)
+
                     if current:
-                        print(current["title"], end="\r", flush=True)
+                        # print(current["title"], end="\r", flush=True)
                         if seen.get(current['title']):
                             continue
                         
@@ -40,11 +51,11 @@ class WikiScrapper:
                         
                         queue += current['links']
                         self.data.append(current)
-                        
+
                         if max_nodes and len(self.data) == max_nodes:
                             return self.data
                         
-                        time.sleep(1)
+                        # time.sleep(1)
                 except:
                     continue
             
@@ -52,7 +63,9 @@ class WikiScrapper:
             
         return self.data
         
-    
+    def valid_url(self, url):
+        return len(url.split("//")) <= 2
+
     def to_dataframe(self):
         return pd.DataFrame(self.data)
     
