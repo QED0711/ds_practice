@@ -2,8 +2,10 @@ import pandas as pd
 import pymongo
 from copy import copy, deepcopy
 
-from get_related_links import get_related_links
+from keys import *
 
+from get_related_links import get_related_links
+import time
 
 class WikiScrapper:
     
@@ -13,7 +15,11 @@ class WikiScrapper:
     
     def traverse_from(self, url, max_depth=3, max_nodes=100):
         current = get_related_links(url)
-        queue = list(current['links'])
+        if current:
+            queue = list(current['links'])
+        else: 
+            return
+
         self.data = [current]
         seen = {current["title"]: True}
         depth_count = 1
@@ -26,7 +32,7 @@ class WikiScrapper:
                     current = get_related_links(queue.pop(0))
                     
                     if current:
-                        
+                        print(current["title"], end="\r", flush=True)
                         if seen.get(current['title']):
                             continue
                         
@@ -38,6 +44,7 @@ class WikiScrapper:
                         if max_nodes and len(self.data) == max_nodes:
                             return self.data
                         
+                        time.sleep(1)
                 except:
                     continue
             
