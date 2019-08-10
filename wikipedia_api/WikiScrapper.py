@@ -18,32 +18,27 @@ class WikiScrapper:
     
     def traverse_from(self, url, max_depth=3, max_nodes=100):
         current = get_related_links(url)
-        # pdb.set_trace()
+        
         
         if current:
-            queue = list(current['links'])
+            queue = [link for link in current['links'] if self.valid_url(link)]
         else: 
             return
 
         self.data = [current]
         seen = {current["title"]: True}
         depth_count = 1
-                
-        while depth_count < max_depth or len(queue) == 0:
+
+        while depth_count < max_depth and len(queue) > 0:
             queue_copy = queue.copy()
             
             for link in queue_copy:
                 try:
                     current_url = queue.pop(0)
-                    if not self.valid_url(current_url):
-                        print("BAD URL:", current_url)
-                        print("queue len", len(queue))
-                        continue
-                    print(current_url)
                     current = get_related_links(current_url)
 
                     if current:
-                        # print(current["title"], end="\r", flush=True)
+                        print(current["title"] + "" * 50, end="\r", flush=True)
                         if seen.get(current['title']):
                             continue
                         
@@ -54,8 +49,6 @@ class WikiScrapper:
 
                         if max_nodes and len(self.data) == max_nodes:
                             return self.data
-                        
-                        # time.sleep(1)
                 except:
                     continue
             

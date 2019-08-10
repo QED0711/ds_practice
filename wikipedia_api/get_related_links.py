@@ -39,7 +39,6 @@ def get_article_title(soup):
     
       
 def get_related_links(url, timeout=5):
-    print("URL:", url)
     user_agent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:15.0) Gecko/20100101 Firefox/15.0.1"
     try:
         signal.alarm(timeout)
@@ -49,9 +48,6 @@ def get_related_links(url, timeout=5):
         print("NO RESPONSE")
         return None
 
-    print("RESPONSE:", resp.status_code)
-
-    # print("Response Status:\t", resp.status_code, end="\r", flush=True)
     soup = BeautifulSoup(resp.content, "html.parser")
     
     title = get_article_title(soup)
