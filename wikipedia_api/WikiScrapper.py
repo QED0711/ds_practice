@@ -38,22 +38,19 @@ class WikiScrapper:
                     current = get_related_links(current_url)
 
                     if current:
-                        # print(current["title"] + "" * 50, end="\r", flush=True)
                         if seen.get(current['title']):
                             continue
-                        
+
                         seen[current['title']] = True
                         
                         queue += current['links']
                         self.data.append(current)
-
                         if max_nodes and len(self.data) == max_nodes:
                             return self.data
                 except:
                     continue
             
             depth_count += 1
-            
         return self.data
         
     def valid_url(self, url):

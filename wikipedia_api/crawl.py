@@ -1,7 +1,7 @@
 import pandas as pd
 from WikiScrapper import *
 
-if __name__ == "__main__":
+def run():
     titles_df = pd.read_csv("top_wikipedia_articles.csv")
 
     for i in range(titles_df.shape[0]):
@@ -24,6 +24,10 @@ if __name__ == "__main__":
             titles_df.to_csv("top_wikipedia_articles.csv", index=False)
         
             time.sleep(2)
+
+
+if __name__ == "__main__":
+    run()
 
 
 
