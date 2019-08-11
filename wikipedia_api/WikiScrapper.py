@@ -38,7 +38,7 @@ class WikiScrapper:
                     current = get_related_links(current_url)
 
                     if current:
-                        print(current["title"] + "" * 50, end="\r", flush=True)
+                        # print(current["title"] + "" * 50, end="\r", flush=True)
                         if seen.get(current['title']):
                             continue
                         

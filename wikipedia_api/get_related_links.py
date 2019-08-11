@@ -45,7 +45,6 @@ def get_related_links(url, timeout=5):
         resp = requests.get(url, headers={"User-Agent": user_agent})
         signal.alarm(0)
     except:
-        print("NO RESPONSE")
         return None
 
     soup = BeautifulSoup(resp.content, "html.parser")
